@@ -57,7 +57,7 @@
 	- Assigns users to chats
 	- Just says what users are in what chats, by conversationId and username
 	- Participants are in groups, and make posts and shortcuts
-	- It shares all of its fields with others, but for necessary association (this table is a natrual result of normalizing the other tables, to remove columns that are lists of entities)
+	- It shares all of its fields with others, but for necessary association (this table is a natural result of normalizing the other tables, to remove columns that are lists of entities)
 	- Fields
 		- username is the name of the user
 		- conversationId is what chat the user is a part of
