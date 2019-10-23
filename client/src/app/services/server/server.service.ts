@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
-import { SignInRequest } from 'src/app/requests/sign-in-request';
-import { SignUpRequest } from 'src/app/requests/sign-up-request';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { tap, retry } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
-
+import {
+  SignInRequest, SignUpRequest, SignOutRequest, CreateConversationRequest, 
+  LeaveConversationRequest, CreatePostRequest, CreateShortcutRequest 
+} from '../../requests/requests';
+import {
+  SignInResponse, SignUpResponse, SignOutResponse, GetUserConversationsResponse, 
+  GetConversationDetailsResponse, CreateConversationResponse, 
+  LeaveConversationResponse, CreatePostResponse, DeletePostResponse, 
+  GetUserShortcutsResponse, CreateShortcutResponse, DeleteShortcutResponse 
+} from '../../responses/responses';
 
 interface HttpOptions {
   headers?: HttpHeaders | {
@@ -16,7 +23,6 @@ interface HttpOptions {
     [param: string]: string | string[];
   };
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +72,7 @@ export class ServerService {
     return this._get(url) as Observable<GetConversationDetailsResponse>;
   }
 
-  createConversation(req: ConversationRequest) {
+  createConversation(req: CreateConversationRequest) {
     const url = this._formUrl('conversation/create');
 
     return this._post(url, req) as Observable<CreateConversationResponse>;
@@ -89,7 +95,7 @@ export class ServerService {
   deletePost(postId: string) {
     const url = this._formUrl(`post/delete/${postId}`);
 
-    return this._get(url) as Observable<DeletePostResponse>;
+    return this._delete(url) as Observable<DeletePostResponse>;
   }
 
   /* Shortcut Requests */
@@ -109,7 +115,7 @@ export class ServerService {
   deleteShortcut(shortcutId: string) {
     const url = this._formUrl('shortcut/delete');
 
-    return this._post(url, req) as Observable<DeleteShortcutResponse>;
+    return this._delete(url) as Observable<DeleteShortcutResponse>;
   }
 
   /* Helper Methods */
@@ -118,6 +124,7 @@ export class ServerService {
     const augmentedOptions = this._addAuthorizationHeader(options);
 
     return this.http.get(url, augmentedOptions).pipe(
+      retry(2),
       tap((res) => {
         console.debug(`get: ${url}`, 
                       `options sent: ${options}`, 
@@ -126,15 +133,29 @@ export class ServerService {
     );
   }
 
-  private _post(url: string, req: any, options?: HttpOptions): Observable<any> {
+  private _post(url: string, req?: any, options?: HttpOptions): Observable<any> {
     const augmentedOptions = this._addAuthorizationHeader(options);
 
     return this.http.post(url, req, augmentedOptions).pipe(
+      retry(2),
       tap((res) => {
         console.debug(`post to: ${url}`, 
                       `request sent: ${req}`, 
                       `options sent: ${options}`, 
                       `response: ${res}`);
+      })
+    );
+  }
+
+  private _delete(url: string, options?: HttpOptions): Observable<any> {
+    const augmentedOptions = this._addAuthorizationHeader(options);
+
+    return this.http.delete(url, augmentedOptions).pipe(
+      retry(2),
+      tap((res) => {
+        console.debug(`delete: ${url}`,
+          `options sent: ${options}`,
+          `response: ${res}`);
       })
     );
   }
