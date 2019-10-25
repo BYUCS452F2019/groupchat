@@ -3,64 +3,44 @@
 class Database
 {
     // This needs to be filled out still
-    $servername = "localhost";
-    $dbusername = "gcdbadmin";
-    $dbpassword = "gcdbadmin";
-    $dbname = "groupchat";
-
-    // Creates database
-    function createDB()
-    {
-        try 
-        {
-            $db = new PDO("mysql:host=$servername;", $dbusername, $dbpassword);
-            // set the PDO error mode to exception
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "CREATE DATABASE $dbname IF NOT EXISTS";
-            // use exec() because no results are returned
-            $db->exec($sql);
-            echo "Database created successfully<br>";
-        }
-        catch(PDOException $e)
-        {
-            echo $sql . "<br>" . $e->getMessage();
-        }
-        
-        $db = null;
-    }
+    public $servername = "remotemysql.com";
+    public $dbusername = "kpwBSZVzSb";
+    public $dbpassword = "jGNwCE2tmT";
+    public $dbname = "kpwBSZVzSb";
+    public $port = "3306";
 
     // Creates any tables that don't exist
     function createTables()
     {
-        createUserTable();
-        createConversationTable();
-        createPostTable();
-        createShortcutTable();
-        createParticipantTable();
+        $this->createUserTable();
+        $this->createConversationTable();
+        $this->createPostTable();
+        $this->createShortcutTable();
+        $this->createParticipantTable();
     }
 
     function createUserTable()
     {
         try 
         {
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $db = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to create table
-            $sql = "CREATE TABLE User IF NOT EXISTS (
-            username VARCHAR(30) NOT NULL PRIMARY KEY,
-            password VARCHAR(30) NOT NULL,
-            firstName VARCHAR(30) NOT NULL,
-            lastName VARCHAR(30) NOT NULL,
-            email VARCHAR(50) NOT NULL,
-            pictureUrl VARCHAR(50) NOT NULL,
-            join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            )";
+            $sql = "CREATE TABLE IF NOT EXISTS Users (
+                username VARCHAR(30) NOT NULL PRIMARY KEY UNIQUE,
+                password VARCHAR(30) NOT NULL,
+                firstName VARCHAR(30) NOT NULL,
+                lastName VARCHAR(30) NOT NULL,
+                email VARCHAR(50) NOT NULL,
+                pictureUrl VARCHAR(50) NOT NULL,
+                join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )";
         
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "Table User created successfully";
+            echo "Table Users created successfully\r\n";
         }
         catch(PDOException $e)
         {
@@ -74,19 +54,19 @@ class Database
     {
         try 
         {
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $db = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to create table
-            $sql = "CREATE TABLE Conversation IF NOT EXISTS (
+            $sql = "CREATE TABLE IF NOT EXISTS Conversations (
             conversationId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(30) NOT NULL
             )";
         
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "Table User created successfully";
+            echo "Table Conversations created successfully\r\n";
         }
         catch(PDOException $e)
         {
@@ -100,22 +80,24 @@ class Database
     {
         try 
         {
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $db = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to create table
-            $sql = "CREATE TABLE Post IF NOT EXISTS (
-            postId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-            foreign key(conversationId) references Conversation ON DELETE CASCADE,
-            foreign key(username) references User ON DELETE CASCADE,
-            content TEXT NOT NULL,
-            timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            )";
+            $sql = "CREATE TABLE IF NOT EXISTS Posts(
+                conversationId INT(6) UNSIGNED NOT NULL,
+                username VARCHAR(30) NOT NULL,
+                postId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                foreign key(conversationId) references Conversations(conversationId) ON DELETE CASCADE,
+                foreign key(username) references Users(username) ON DELETE CASCADE,
+                content TEXT NOT NULL,
+                timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                )";
         
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "Table User created successfully";
+            echo "Table Posts created successfully\r\n";
         }
         catch(PDOException $e)
         {
@@ -129,21 +111,22 @@ class Database
     {
         try 
         {
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $db = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to create table
-            $sql = "CREATE TABLE Shortcut IF NOT EXISTS (
+            $sql = "CREATE TABLE IF NOT EXISTS Shortcuts (
+            username VARCHAR(30) NOT NULL,
             shortcutId INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             pattern VARCHAR(50) NOT NULL,
-            foreign key(username) references User ON DELETE CASCADE,
+            foreign key(username) references Users(username) ON DELETE CASCADE,
             command TEXT NOT NULL
             )";
         
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "Table User created successfully";
+            echo "Table Shortcuts created successfully\r\n";
         }
         catch(PDOException $e)
         {
@@ -157,19 +140,21 @@ class Database
     {
         try 
         {
-            $db = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $db = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to create table
-            $sql = "CREATE TABLE Participant IF NOT EXISTS (
-            foreign key(conversationId) references Conversation ON DELETE CASCADE,
-            foreign key(username) references User ON DELETE CASCADE
+            $sql = "CREATE TABLE IF NOT EXISTS Participants(
+            conversationId INT(6) UNSIGNED NOT NULL,
+            username VARCHAR(30) NOT NULL,
+            foreign key(conversationId) references Conversations(conversationId) ON DELETE CASCADE,
+            foreign key(username) references Users(username) ON DELETE CASCADE
             )";
         
             // use exec() because no results are returned
             $db->exec($sql);
-            echo "Table User created successfully";
+            echo "Table Participants created successfully";
         }
         catch(PDOException $e)
         {
@@ -183,10 +168,10 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO User (username, password, firstName, lastName, email, pictureUrl) VALUES ($username, $password, $firstName, $lastName, $email, $pictureUrl)";
+            $sql = "INSERT INTO Users (username, password, firstName, lastName, email, pictureUrl) VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$pictureUrl')";
             // use exec() because no results are returned
             $conn->exec($sql);
             echo "New record created successfully";
@@ -203,10 +188,10 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO Conversation (name) VALUES ($name)";
+            $sql = "INSERT INTO Conversations (name) VALUES ('$name')";
             // use exec() because no results are returned
             $conn->exec($sql);
             echo "New record created successfully";
@@ -223,10 +208,10 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO Post (conversationId, username, content) VALUES ($conversationId, $username, $content)";
+            $sql = "INSERT INTO Posts (conversationId, username, content) VALUES ('$conversationId', '$username', '$content')";
             // use exec() because no results are returned
             $conn->exec($sql);
             echo "New record created successfully";
@@ -243,10 +228,10 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO Shortcut (pattern, username, command) VALUES ($pattern, $username, $command)";
+            $sql = "INSERT INTO Shortcuts (pattern, username, command) VALUES ('$pattern', '$username', '$command')";
             // use exec() because no results are returned
             $conn->exec($sql);
             echo "New record created successfully";
@@ -263,10 +248,10 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $sql = "INSERT INTO Shortcut (conversationId, username) VALUES ($conversationId, $username)";
+            $sql = "INSERT INTO Participants (conversationId, username) VALUES ('$conversationId', '$username')";
             // use exec() because no results are returned
             $conn->exec($sql);
             echo "New record created successfully";
@@ -283,12 +268,12 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to delete a record
-            $sql = "DELETE FROM User WHERE username = $username";
+            $sql = "DELETE FROM Users WHERE username = '$username'";
         
             // use exec() because no results are returned
             $conn->exec($sql);
@@ -304,12 +289,12 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to delete a record
-            $sql = "DELETE FROM Conversation WHERE conversationId = $conversationId";
+            $sql = "DELETE FROM Conversations WHERE conversationId = '$conversationId'";
         
             // use exec() because no results are returned
             $conn->exec($sql);
@@ -325,12 +310,12 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to delete a record
-            $sql = "DELETE FROM Post WHERE postId = $postId";
+            $sql = "DELETE FROM Posts WHERE postId = '$postId'";
         
             // use exec() because no results are returned
             $conn->exec($sql);
@@ -346,12 +331,12 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to delete a record
-            $sql = "DELETE FROM Shortcut WHERE shortcutId = $shortcutId";
+            $sql = "DELETE FROM Shortcuts WHERE shortcutId = '$shortcutId'";
         
             // use exec() because no results are returned
             $conn->exec($sql);
@@ -367,12 +352,12 @@ class Database
     {
         try 
         {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         
             // sql to delete a record
-            $sql = "DELETE FROM Participant WHERE conversationId = $conversationId";
+            $sql = "DELETE FROM Participants WHERE conversationId = '$conversationId'";
         
             // use exec() because no results are returned
             $conn->exec($sql);
@@ -392,9 +377,9 @@ class Database
     function validateLogin($username, $password)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM User WHERE username = $username");
+            $stmt = $conn->prepare("SELECT * FROM Users WHERE username = '$username'");
             $stmt->execute();
         
             // set the resulting array to associative
@@ -404,14 +389,15 @@ class Database
 
             if ($result[0]['password'] === $password)
             {
-                return $result[0];
+                error_log( print_r($result, TRUE) );
+                echo json_encode($result);
+                return;
             }
-            return null;;
+            echo "not valid";
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
             $conn = null;
-            return null;
         }
     }
 
@@ -421,9 +407,9 @@ class Database
     function getConversationById($conversationId)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Conversation WHERE conversationId = $conversationId");
+            $stmt = $conn->prepare("SELECT * FROM Conversations WHERE conversationId = '$conversationId'");
             $stmt->execute();
         
             // set the resulting array to associative
@@ -431,7 +417,14 @@ class Database
             $result = $stmt->fetchAll();
             $conn = null;
 
-            return $result;
+            if (count($result) == 0)
+            {
+                echo "empty";
+                return;
+            }
+
+            echo json_encode($result);
+            return;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -446,17 +439,23 @@ class Database
     function getPostById($postId)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Post WHERE postId = $postId");
+            $stmt = $conn->prepare("SELECT * FROM Posts WHERE postId = '$postId'");
             $stmt->execute();
         
             // set the resulting array to associative
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
+            if (count($result) == 0)
+            {
+                echo "empty";
+                return;
+            }
 
-            return $result;
+            echo json_encode($result);
+            return;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -469,17 +468,23 @@ class Database
     function getAllPostsByUserInConversation($username, $conversationId)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Post WHERE username = $username AND conversationId = $conversationId");
+            $stmt = $conn->prepare("SELECT * FROM Posts WHERE username = '$username' AND conversationId = '$conversationId'");
             $stmt->execute();
         
             // set the resulting array to associative
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
+            if (count($result) == 0)
+            {
+                echo "empty";
+                return;
+            }
 
-            return $result;
+            echo json_encode($result);
+            return;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -492,17 +497,22 @@ class Database
     function getAllPostsInConversation($conversationId)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Post WHERE conversationId = $conversationId");
+            $stmt = $conn->prepare("SELECT * FROM Posts WHERE conversationId = '$conversationId'");
             $stmt->execute();
         
             // set the resulting array to associative
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
-
-            return $result;
+            if (count($result) == 0)
+            {
+                echo "empty";
+                return;
+            }
+            echo json_encode($result);
+            return;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
@@ -514,31 +524,34 @@ class Database
     /* Shortcut methods */
 
     /* Takes a message and changes it so that any shortcuts will be implemented and returns new message */
-    function convertMessageToUseShortcutsOfUser($username, $message)
+    function convertMessage($username, $message)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Shortcut WHERE username = $username");
+            $stmt = $conn->prepare("SELECT * FROM Shortcuts WHERE username = '$username'");
             $stmt->execute();
         
             // set the resulting array to associative
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
-            for ($i = 0; i < count($result); $i++)
+
+            error_log( print_r($result, TRUE) );
+
+            for ($i = 0; $i < count($result); $i++)
             {
-                $message = str_replace($result[$i]['patttern'], $result[$i]['command'], $message);
+                $message = str_replace($result[$i]['pattern'], $result[$i]['command'], $message);
             }
             $conn = null;
 
-            return $message;
+            echo $message;
+            return;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
             $conn = null;
             return null;
         }
-        $wordSeparatedMessage = explode(" ", $message);
         
     }
 
@@ -548,17 +561,22 @@ class Database
     function getAllParticipantsOfConversationWithConversationId($conversationId)
     {
         try {
-            $conn = new PDO("mysql:host=$servername;dbname=$dbname", $dbusername, $dbpassword);
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Participant WHERE conversationId = $conversationId");
+            $stmt = $conn->prepare("SELECT * FROM Participants WHERE conversationId = '$conversationId'");
             $stmt->execute();
         
             // set the resulting array to associative
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
-
-            return $result;
+            if (count($result) == 0)
+            {
+                echo "empty";
+                return;
+            }
+            echo json_encode($result);
+            return;
         }
         catch(PDOException $e) {
             echo "Error: " . $e->getMessage();
