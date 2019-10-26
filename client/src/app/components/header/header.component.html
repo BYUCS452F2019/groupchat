@@ -1,1 +1,18 @@
-<p>header works!</p>
+<mat-toolbar color="primary" class="mat-elevation-z3 home-toolbar">
+  <button mat-button class="home-button" routerLink="/start">groupchat</button>
+  
+  <!-- This fills the remaining space of the current row -->
+  <span class="flex-space-filler"></span>
+
+  <ng-container *ngIf="isLoggedIn">
+    <button mat-icon-button aria-label="Home Button">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Profile Button">
+      <mat-icon>account_circle</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Shortcut Button">
+      <mat-icon>subdirectory_arrow_left</mat-icon>
+    </button>
+  </ng-container>
+</mat-toolbar>

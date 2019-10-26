@@ -7,6 +7,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatListModule } from '@angular/material/list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   imports: [
@@ -18,6 +24,12 @@ import { MatListModule } from '@angular/material/list';
     MatCardModule,
     MatTabsModule,
     MatListModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatSidenavModule,
+    MatBadgeModule,
+    MatChipsModule,
   ],
   exports : [
     MatButtonModule,
@@ -28,6 +40,12 @@ import { MatListModule } from '@angular/material/list';
     MatCardModule,
     MatTabsModule,
     MatListModule,
+    MatIconModule,
+    MatDialogModule,
+    MatSnackBarModule,
+    MatSidenavModule,
+    MatBadgeModule,
+    MatChipsModule,
   ]
 })
 export class MaterialModule { }

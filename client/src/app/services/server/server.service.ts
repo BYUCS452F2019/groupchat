@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { tap, retry } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { tap, retry, catchError } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import {
   SignInRequest, SignUpRequest, SignOutRequest, CreateConversationRequest, 
@@ -125,6 +125,9 @@ export class ServerService {
 
     return this.http.get(url, augmentedOptions).pipe(
       retry(2),
+      catchError((error) => {
+        return of(`bad get request: ${error}`);
+      }),
       tap((res) => {
         console.debug(`get: ${url}`, 
                       `options sent: ${options}`, 
@@ -138,6 +141,9 @@ export class ServerService {
 
     return this.http.post(url, req, augmentedOptions).pipe(
       retry(2),
+      catchError((error) => {
+        return of(`bad post request: ${error}`);
+      }),
       tap((res) => {
         console.debug(`post to: ${url}`, 
                       `request sent: ${req}`, 
@@ -152,6 +158,9 @@ export class ServerService {
 
     return this.http.delete(url, augmentedOptions).pipe(
       retry(2),
+      catchError((error) => {
+        return of(`bad delete request: ${error}`);
+      }),
       tap((res) => {
         console.debug(`delete: ${url}`,
           `options sent: ${options}`,

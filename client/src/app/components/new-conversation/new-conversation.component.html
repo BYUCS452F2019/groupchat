@@ -1,0 +1,29 @@
+<h1 mat-dialog-title>New Conversation</h1>
+
+<div mat-dialog-content>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="name" placeholder="conversation name">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let participant of participants" [selectable]="selectable" [removable]="removable" (removed)="remove(participant)">
+        {{participant.username}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="choose participants" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+    </mat-chip-list>
+  </mat-form-field>
+  
+
+  <button mat-icon-button mat-dialog-close class="close-button" tabindex="4">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="close()">Cancel</button>
+  <button mat-stroked-button color="primary" (click)="createConversation()"
+    [disabled]="!name || !participants.length" color="primary">Create</button>
+</div>

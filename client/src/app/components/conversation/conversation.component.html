@@ -1,0 +1,13 @@
+<div class="conversation-container">
+  <div class="posts-container">
+    <mat-list class="post-list">
+      <app-post [post]="post" *ngFor="let p of nums"></app-post>
+    </mat-list>
+  </div>
+
+  <mat-form-field class="post-input" appearance="outline">
+    <mat-label>New Message</mat-label>
+    <textarea matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeMinRows="1"
+      cdkAutosizeMaxRows="8" class="post-input-textarea"></textarea>
+  </mat-form-field>
+</div>

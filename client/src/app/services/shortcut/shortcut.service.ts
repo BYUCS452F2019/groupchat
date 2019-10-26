@@ -11,7 +11,7 @@ export class ShortcutService {
 
   }
 
-  createShortcut(req: ShortcutRequest) {
+  createShortcut(pattern, effect) {
 
   }
 

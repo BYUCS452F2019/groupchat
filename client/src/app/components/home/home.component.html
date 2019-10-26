@@ -1,0 +1,78 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" [(opened)]="opened" class="sidenav">
+    <button mat-stroked-button color="primary" class="new-conversation" (click)="newConversation()">
+      <span class="new-conversation-text">New Conversation</span>
+      <mat-icon>add_circle_outline</mat-icon>
+    </button>
+
+    <mat-action-list class="conversation-list">
+      <button mat-list-item>
+        <span matBadge="4" matBadgeOverlap="false" matBadgeColor="warn" class="conversation-button" [matBadgeHidden]="false">conversation</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-list-item>
+        <span class="conversation-button">other</span>
+      </button>
+      <mat-divider></mat-divider>
+    </mat-action-list>
+
+    
+  </mat-sidenav>
+
+  <mat-sidenav-content class="sidenav-content">
+    <app-conversation [conversationId]="selectedConversationId"></app-conversation>
+  </mat-sidenav-content>
+</mat-sidenav-container>

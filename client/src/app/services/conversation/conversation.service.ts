@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CreatePostRequest } from 'src/app/requests/post-request';
-import { CreateConversationRequest } from 'src/app/requests/create-conversation-request';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +18,7 @@ export class ConversationService {
     // participants, recent posts (user data for each participant as well)
   }
 
-  async createConversation(req: CreateConversationRequest) {
+  async createConversation(name: string, users: string[]) {
 
   }
 
@@ -28,7 +26,7 @@ export class ConversationService {
     // If one person leaves, the other person should be able to see it still
   }
 
-  async postToConversation(req: CreatePostRequest) {
+  async postToConversation(content: string) {
     // TODO offload responsibility to make the request to postService
     //
   }

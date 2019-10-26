@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CreatePostRequest } from 'src/app/requests/post-request';
-import { Post } from 'src/app/models/post';
+import { Post } from '../../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,7 @@ export class PostService {
 
   constructor() { }
 
-  createPost(req: CreatePostRequest) {
+  createPost(content: string) {
 
   }
 

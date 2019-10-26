@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SignInRequest } from 'src/app/requests/sign-in-request';
-import { SignUpRequest } from 'src/app/requests/sign-up-request';
+import { UserInfo } from '../../models/models';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ export class AuthService {
 
   constructor() { }
 
-  async signIn(req: SignInRequest) {
+  async signIn(username: string, password: string) {
     // TODO
     // Authenticate with server
     // Store auth token
@@ -25,7 +25,7 @@ export class AuthService {
     // ignore errors from server with regards to deleting token
   }
 
-  async signUp(req: SignUpRequest) {
+  async signUp(username: string, password: string, userInfo: UserInfo) {
     // TODO
     // Signup with server,
     // Store auth token

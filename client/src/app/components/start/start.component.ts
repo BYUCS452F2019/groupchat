@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { VisualService } from 'src/app/services/visual/visual.service';
+import { SignInComponent } from '../sign-in/sign-in.component';
 
 @Component({
   selector: 'app-start',
@@ -7,9 +10,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StartComponent implements OnInit {
 
-  constructor() { }
+  constructor(private visual: VisualService) { }
 
   ngOnInit() {
+  }
+
+  doSignIn() {
+    this.visual.displayModal(SignInComponent, {
+      width: '300px',
+      height: '300px'
+    });
   }
 
 }

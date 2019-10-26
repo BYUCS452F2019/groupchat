@@ -1,0 +1,14 @@
+.flex-space-filler {
+  flex: 1 1 auto;
+}
+
+.home-button {
+  font-size: 20px;
+  font-family: impact;
+}
+
+.home-toolbar {
+  height: 48px;
+  position: fixed;
+  z-index: 2;
+}
