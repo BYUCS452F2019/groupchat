@@ -1,0 +1,12 @@
+.page-not-found-card {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    margin: auto;
+    box-sizing: border-box;
+    width: calc(100% - 32px);
+    max-width: 400px;
+    height: 150px;
+    max-height: calc(100% - 32px);
+    text-align: center;
+}

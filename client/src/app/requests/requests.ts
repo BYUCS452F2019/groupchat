@@ -13,7 +13,7 @@ export interface SignOutRequest {
 
 export interface CreateConversationRequest {
   name?: string;
-  users: string[];
+  participants: string[];
 }
 
 export interface LeaveConversationRequest {

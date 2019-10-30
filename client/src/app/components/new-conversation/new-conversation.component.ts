@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ConversationService } from '../../services/conversation/conversation.service';
 
 interface Participant {
   username: string;
@@ -24,10 +25,10 @@ export class NewConversationComponent implements OnInit {
   addOnBlur = true;
   readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
-  constructor(private dialogRef: MatDialogRef<NewConversationComponent>) {
-    this.participants = [
-      { username: 'jeremypleb' }
-    ];
+  constructor(private dialogRef: MatDialogRef<NewConversationComponent>, private conversation: ConversationService) {
+    // this.participants = [
+    //   { username: 'jeremypleb' }
+    // ];
   }
 
   ngOnInit() {
@@ -37,6 +38,7 @@ export class NewConversationComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
+    // TODO we need to get a list of all participants here and filter them
     if ((value || '').trim()) {
       this.participants.push({ username: value.trim() });
     }
@@ -62,11 +64,14 @@ export class NewConversationComponent implements OnInit {
   createConversation() {
     this.isLoading = true;
 
-    // TODO structure data and create conversation
-    const conversation = {};
+    const participants = this.participants.map((p) => {
+      return p.username;
+    });
 
-    // if there was a conversation created, send it back and set it as the conversation
-    this.dialogRef.close(conversation);
+    this.conversation.createConversation(this.name, participants).subscribe((conversation) => {
+      // if there was a conversation created, send it back and set it as the conversation
+      this.dialogRef.close(conversation);
+    });
   }
 
 }

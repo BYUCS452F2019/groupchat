@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
+import { StorageService } from '../storage/storage.service';
+import { ServerService } from '../server/server.service';
+import { CreateConversationRequest } from 'src/app/requests/requests';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationService {
 
-  constructor() { }
+  constructor(private storage: StorageService, private server: ServerService) { }
 
   async getUserConversations() {
     // TODO get current username
@@ -18,8 +22,23 @@ export class ConversationService {
     // participants, recent posts (user data for each participant as well)
   }
 
-  async createConversation(name: string, users: string[]) {
+  createConversation(name: string, participants: string[]) {
+    const username = ''//this.storage.getUser().username;
 
+    const createConversationRequest: CreateConversationRequest = {
+      name,
+      participants: [username,...participants]
+    }
+
+    return this.server.createConversation(createConversationRequest).pipe(
+      map((createConversationResponse) => {
+        if (!!createConversationResponse) {
+          return createConversationResponse.conversation;
+        } else {
+          return; //nothing
+        }
+      })
+    )
   }
 
   async leaveConversation(conversationId: string) {

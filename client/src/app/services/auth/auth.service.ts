@@ -1,5 +1,10 @@
 import { Injectable } from '@angular/core';
 import { UserInfo } from '../../models/models';
+import { Observable, Subject } from 'rxjs';
+import { StorageService } from '../storage/storage.service';
+import { ServerService } from '../server/server.service';
+import { SignInRequest, SignUpRequest, SignOutRequest } from '../../requests/requests';
+import { tap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -7,31 +12,64 @@ import { UserInfo } from '../../models/models';
 })
 export class AuthService {
 
-  constructor() { }
+  public isAuthenticated: Subject<boolean>;
 
-  async signIn(username: string, password: string) {
-    // TODO
-    // Authenticate with server
-    // Store auth token
-    // Send errors for invalid req or server failure    
-    // redirect to home page
+  constructor(private storage: StorageService, private server: ServerService) {
+    this.isAuthenticated = new Subject();
   }
 
-  async signOut() {
-    // TODO
-    // Tell server to delete auth token
-    // delete auth token from local storage
-    // redirect to start page
-    // ignore errors from server with regards to deleting token
+  ngOnInit() {
+    const token = this.storage.getAuthToken();
+    this.isAuthenticated.next(!!token);
   }
 
-  async signUp(username: string, password: string, userInfo: UserInfo) {
-    // TODO
-    // Signup with server,
-    // Store auth token
-    // Send errors for invalid req or server failure
-    // redirect to new user page
-    // share logic with signin method
+  signIn(username: string, password: string) {
+    const signInRequest: SignInRequest = {
+      username,
+      password
+    }
+
+    return this.server.signIn(signInRequest).pipe(
+      tap((signInResponse) => {
+        if (!!signInResponse) {
+          this.storage.setAuthToken(signInResponse.authToken);
+          //this.storage.setUser(signInResponse.user);
+          this.isAuthenticated.next(true);
+        }
+      })
+    );
+  }
+
+  signOut() {
+    const username = ''//this.storage.getUser().username;
+
+    const signOutRequest: SignOutRequest = {
+      username
+    }
+
+    // we aren't concerned if this succeeded or not on the frontend
+    this.server.signOut(signOutRequest);
+
+    this.storage.deleteAuthToken();
+    this.isAuthenticated.next(false);
+  }
+
+  signUp(username: string, password: string, userInfo: UserInfo) {
+    const signUpRequest: SignUpRequest = {
+      username,
+      password,
+      ...userInfo
+    }
+
+    return this.server.signUp(signUpRequest).pipe(
+      tap((signUpResponse) => {
+        if (!!signUpResponse) {
+          this.storage.setAuthToken(signUpResponse.authToken);
+          //this.storage.setUser(signUpResponse.user);
+          this.isAuthenticated.next(true);
+        }
+      })
+    );
   }
 
 }

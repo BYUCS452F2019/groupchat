@@ -1,1 +1,30 @@
-<p>sign-up works!</p>
+<h1 mat-dialog-title>Sign Up</h1>
+
+<div mat-dialog-content>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="username" placeholder="username" (keydown.enter)="signUp()">
+  </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="password" type="password" placeholder="password" (keydown.enter)="signUp()">
+  </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="firstName" type="text" placeholder="first name" (keydown.enter)="signUp()">
+  </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="lastName" type="text" placeholder="last name" (keydown.enter)="signUp()">
+  </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="email" type="email" placeholder="email" (keydown.enter)="signUp()">
+  </mat-form-field>
+
+
+
+  <button mat-icon-button mat-dialog-close class="close-button" tabindex="4">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button color="primary" class="almost-full-width" (click)="signUp()"
+    [disabled]="!username || !password || !firstName || !lastName || !email || !isValidEmail(email)">Sign Up</button>
+</div>

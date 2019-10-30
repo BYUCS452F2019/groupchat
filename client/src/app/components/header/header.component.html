@@ -1,18 +1,21 @@
 <mat-toolbar color="primary" class="mat-elevation-z3 home-toolbar">
-  <button mat-button class="home-button" routerLink="/start">groupchat</button>
+  <button mat-button class="home-button" [routerLink]="homeLink">groupchat</button>
   
   <!-- This fills the remaining space of the current row -->
   <span class="flex-space-filler"></span>
 
-  <ng-container *ngIf="isLoggedIn">
-    <button mat-icon-button aria-label="Home Button">
+  <ng-container *ngIf="isAuthenticated">
+    <button mat-icon-button aria-label="Home Button" [routerLink]="homeLink">
       <mat-icon>home</mat-icon>
     </button>
-    <button mat-icon-button aria-label="Profile Button">
+    <button mat-icon-button aria-label="Profile Button" routerLink="/profile">
       <mat-icon>account_circle</mat-icon>
     </button>
-    <button mat-icon-button aria-label="Shortcut Button">
+    <button mat-icon-button aria-label="Shortcut Button" routerLink="/shortcut">
       <mat-icon>subdirectory_arrow_left</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Sign out Button" (click)="signOut()">
+      <mat-icon>exit_to_app</mat-icon>
     </button>
   </ng-container>
 </mat-toolbar>

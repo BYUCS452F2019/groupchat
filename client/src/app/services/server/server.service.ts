@@ -126,7 +126,8 @@ export class ServerService {
     return this.http.get(url, augmentedOptions).pipe(
       retry(2),
       catchError((error) => {
-        return of(`bad get request: ${error}`);
+        console.error(`bad get request: ${error}`);
+        return of(null);
       }),
       tap((res) => {
         console.debug(`get: ${url}`, 
@@ -142,7 +143,8 @@ export class ServerService {
     return this.http.post(url, req, augmentedOptions).pipe(
       retry(2),
       catchError((error) => {
-        return of(`bad post request: ${error}`);
+        console.error(`bad post request: ${error}`);
+        return of(null);
       }),
       tap((res) => {
         console.debug(`post to: ${url}`, 
@@ -159,7 +161,8 @@ export class ServerService {
     return this.http.delete(url, augmentedOptions).pipe(
       retry(2),
       catchError((error) => {
-        return of(`bad delete request: ${error}`);
+        console.error(`bad delete request: ${error}`);
+        return of(null);
       }),
       tap((res) => {
         console.debug(`delete: ${url}`,

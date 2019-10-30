@@ -16,6 +16,8 @@ import { HomeComponent } from './components/home/home.component';
 import { NewConversationComponent } from './components/new-conversation/new-conversation.component';
 import { ConversationComponent } from './components/conversation/conversation.component';
 import { PostComponent } from './components/post/post.component';
+import { ShortcutComponent } from './components/shortcut/shortcut.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   entryComponents: [
@@ -35,12 +37,14 @@ import { PostComponent } from './components/post/post.component';
     NewConversationComponent,
     ConversationComponent,
     PostComponent,
+    ShortcutComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
+    HttpClientModule,
     ReactiveFormsModule,
     MaterialModule,
   ],

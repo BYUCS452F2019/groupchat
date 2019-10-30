@@ -15,64 +15,16 @@
       </button>
       <mat-divider></mat-divider>
 
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-list-item>
-        <span class="conversation-button">other</span>
-      </button>
-      <mat-divider></mat-divider>
+      
     </mat-action-list>
 
     
   </mat-sidenav>
 
   <mat-sidenav-content class="sidenav-content">
-    <app-conversation [conversationId]="selectedConversationId"></app-conversation>
+    <app-conversation *ngIf="!!selectedConversationId; else noConversation" [conversationId]="selectedConversationId"></app-conversation>
+    <ng-template #noConversation>
+      No conversation selected
+    </ng-template>
   </mat-sidenav-content>
 </mat-sidenav-container>
