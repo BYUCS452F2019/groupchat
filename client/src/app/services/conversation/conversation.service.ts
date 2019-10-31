@@ -3,27 +3,47 @@ import { StorageService } from '../storage/storage.service';
 import { ServerService } from '../server/server.service';
 import { CreateConversationRequest } from 'src/app/requests/requests';
 import { map } from 'rxjs/operators';
+import { PostService } from '../post/post.service';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConversationService {
 
-  constructor(private storage: StorageService, private server: ServerService) { }
+  constructor(private storage: StorageService, private server: ServerService, private post: PostService, private utility: UtilityService) { }
 
-  async getUserConversations() {
-    // TODO get current username
-    // send server request to get conversations with this username
-    // return all conversations
+  getUserConversations() {
+    const username = this.storage.getUser().username;
+
+    return this.server.getUserConversations(username).pipe(
+      map((getUserConversationsResponse) => {
+        if (!!getUserConversationsResponse) {
+          return getUserConversationsResponse.conversations;
+        } else {
+          return; // nothing
+        }
+      })
+    );
   }
 
-  async getConversationDetails(conversationId: string) {
-    // TODO this involves getting the recent posts for the conversation as well
-    // participants, recent posts (user data for each participant as well)
+  getConversationDetails(conversationId: string) {
+    return this.server.getConversationDetails(conversationId).pipe(
+      map((getConversationDetailsResponse) => {
+        if (!!getConversationDetailsResponse) {
+          let c = getConversationDetailsResponse.conversation;
+          c.posts.map(this.utility.augmentTimestamp); //convert timestamps to date objects
+
+          return c;
+        } else {
+          return; // nothing
+        }
+      })
+    );
   }
 
   createConversation(name: string, participants: string[]) {
-    const username = ''//this.storage.getUser().username;
+    const username = this.storage.getUser().username;
 
     const createConversationRequest: CreateConversationRequest = {
       name,
@@ -41,13 +61,13 @@ export class ConversationService {
     )
   }
 
-  async leaveConversation(conversationId: string) {
+  leaveConversation(conversationId: string) {
+    // TODO not essential for MVP
     // If one person leaves, the other person should be able to see it still
   }
 
-  async postToConversation(content: string) {
-    // TODO offload responsibility to make the request to postService
-    //
+  postToConversation(conversationId: string, content: string) {
+    return this.post.createPost(conversationId, content);
   }
 
 }

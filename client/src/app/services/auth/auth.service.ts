@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserInfo } from '../../models/models';
-import { Observable, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { StorageService } from '../storage/storage.service';
 import { ServerService } from '../server/server.service';
 import { SignInRequest, SignUpRequest, SignOutRequest } from '../../requests/requests';
@@ -33,7 +33,8 @@ export class AuthService {
       tap((signInResponse) => {
         if (!!signInResponse) {
           this.storage.setAuthToken(signInResponse.authToken);
-          //this.storage.setUser(signInResponse.user);
+          this.storage.setUser(signInResponse.user);
+
           this.isAuthenticated.next(true);
         }
       })
@@ -41,7 +42,7 @@ export class AuthService {
   }
 
   signOut() {
-    const username = ''//this.storage.getUser().username;
+    const username = this.storage.getUser().username;
 
     const signOutRequest: SignOutRequest = {
       username
@@ -65,7 +66,8 @@ export class AuthService {
       tap((signUpResponse) => {
         if (!!signUpResponse) {
           this.storage.setAuthToken(signUpResponse.authToken);
-          //this.storage.setUser(signUpResponse.user);
+          this.storage.setUser(signUpResponse.user);
+
           this.isAuthenticated.next(true);
         }
       })

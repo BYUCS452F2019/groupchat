@@ -29,7 +29,7 @@ interface HttpOptions {
 })
 export class ServerService {
 
-  private readonly BASE_URL = ''
+  private readonly BASE_URL = 'http://localhost:3000';
 
   constructor(private http: HttpClient, private storage: StorageService) { }
 
