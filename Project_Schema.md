@@ -1,17 +1,33 @@
 # Project Schema
 ## Tables
-- User(__username__, password, firstName, lastName, joinDate, email, pictureUrl)
-- Conversation(__conversationId__, name)
-- Post(__postId__, conversationId, username, content, timestamp)
-	- Foreign Key converstationId references Conversation
-	- Foreign Key username references User
-- Shortcut(__shortcutId__, pattern, username, command)
-	- Foreign Key username references User
-- Participant(__username__, __conversationId__)
-	- Foreign Key username references User
-	- Foreign Key converstationId references Conversation
+### User 
+  
+| `username` | password | firstName | lastName | joinDate | email | pictureUrl|
+| --- | --- | --- | --- | --- | --- | --- |
+
+### Conversation
+|`conversationID` | name |
+| --- | --- |	
+
+### Post
+|`postId`| conversationId| username| content| timestamp|
+|---|---|---|---|---|
+- Foreign Key *converstationId* references **Conversation**
+- Foreign Key *username* references **User**
+
+### Shortcut
+|`shortcutId`| pattern| username| command|
+|---|---|---|---|
+- Foreign Key *username* references **User**
+
+### Participant
+|`p_id`| username| conversationId|
+|---|---|---|
+- Foreign Key *username* references **User**
+- Foreign Key *converstationId* references **Conversation**
+
 ## Explanation
-- Note: bold is used to indicate primary keys in the tables above (rather than underline)
+- Note: Primary keys for the tables above are always the first value, and is "coded"
 - User
 	- Named User because each chatting user will have its own unique account and info
 	- The data in the columns represents all the attributes each user account will want to store
@@ -59,5 +75,6 @@
 	- Participants are in groups, and make posts and shortcuts
 	- It shares all of its fields with others, but for necessary association (this table is a natural result of normalizing the other tables, to remove columns that are lists of entities)
 	- Fields
+		- p_id is unique for each particpant (primary key)
 		- username is the name of the user
 		- conversationId is what chat the user is a part of

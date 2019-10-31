@@ -1,0 +1,30 @@
+[25-Oct-2019 03:43:37 America/Los_Angeles] convertMessage
+[25-Oct-2019 03:43:37 America/Los_Angeles] test
+[25-Oct-2019 03:43:38 America/Los_Angeles] Array
+(
+    [0] => Array
+        (
+            [username] => trhodges
+            [shortcutId] => 1
+            [pattern] => {shortcut}
+            [command] => i was a shortcut
+        )
+
+)
+
+[25-Oct-2019 03:43:38 America/Los_Angeles] PHP Notice:  Undefined index: patttern in /opt/bitnami/apache2/htdocs/groupchat/backend/database.php on line 543
+[25-Oct-2019 03:44:24 America/Los_Angeles] convertMessage
+[25-Oct-2019 03:44:24 America/Los_Angeles] test
+[25-Oct-2019 03:44:24 America/Los_Angeles] Array
+(
+    [0] => Array
+        (
+            [username] => trhodges
+            [shortcutId] => 1
+            [pattern] => {shortcut}
+            [command] => i was a shortcut
+        )
+
+)
+
+[25-Oct-2019 03:44:24 America/Los_Angeles] PHP Notice:  Undefined index: patttern in /opt/bitnami/apache2/htdocs/groupchat/backend/database.php on line 543
