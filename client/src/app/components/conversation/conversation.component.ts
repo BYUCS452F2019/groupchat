@@ -45,7 +45,7 @@ export class ConversationComponent implements OnInit {
   initConversation() {
     console.log('init');
 
-    timer(0, 10000).pipe(
+    timer(0, 1000).pipe(
       mergeMap(() => {
         return this.conversation.getConversationDetails(this.conversationId);
       }),
