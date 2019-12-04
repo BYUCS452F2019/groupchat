@@ -25,7 +25,7 @@ export class StartComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.auth.isAuthenticated.unsubscribe();
+    //this.auth.isAuthenticated.unsubscribe();
   }
 
   doSignIn() {

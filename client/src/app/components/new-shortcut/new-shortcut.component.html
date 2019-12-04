@@ -1,0 +1,20 @@
+<h1 mat-dialog-title>New Shortcut</h1>
+
+<div mat-dialog-content>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="pattern" placeholder="pattern" (keydown.enter)="createShortcut()">
+  </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="command" placeholder="command" (keydown.enter)="createShortcut()">
+  </mat-form-field>
+
+  <button mat-icon-button mat-dialog-close class="close-button" tabindex="4">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button (click)="close()">Cancel</button>
+  <button mat-stroked-button color="primary" (click)="createShortcut()" [disabled]="!command || !pattern"
+    color="primary">Create</button>
+</div>

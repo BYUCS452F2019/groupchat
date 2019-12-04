@@ -4,8 +4,9 @@ import { NewConversationComponent } from '../new-conversation/new-conversation.c
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { Router } from '@angular/router';
-import { Conversation, ConversationInfo } from '../../models/models';
+import { ConversationInfo } from '../../models/models';
 import { ConversationService } from 'src/app/services/conversation/conversation.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   public opened = true;
   public conversations: ConversationInfo[] = [];
   public selectedConversationId: string = '';
+  private conversationsSubscription: Observable<ConversationInfo[]>;
 
   constructor(private visual: VisualService, private auth: AuthService, private storage: StorageService, private router: Router, private conversation: ConversationService) { }
 
@@ -29,12 +31,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.auth.isAuthenticated.next(!!this.storage.getAuthToken());
 
     // TODO subscribe to this and update conversations on change by polling and calling next on this
-    //this.conversation.getUserConversations();
-    // also set conversationId to first or most recent conversation
+    this.conversationsSubscription = this.conversation.getUserConversations();
+    this.conversationsSubscription.subscribe((conversationInfos) => {
+      this.conversations = conversationInfos;
+
+      if (!this.selectedConversationId && !!conversationInfos.length) {
+        this.selectedConversationId = conversationInfos[0].conversationId;
+      }
+    });
+
   }
 
   ngOnDestroy() {
-    this.auth.isAuthenticated.unsubscribe();
+    //this.auth.isAuthenticated.unsubscribe();
   }
 
   newConversation() {
@@ -43,8 +52,8 @@ export class HomeComponent implements OnInit, OnDestroy {
       height: '400px'
     });
 
-    dialogRef.afterClosed().subscribe((conversation: Conversation) => {
-      console.log("newConversation: ", conversation);
+    dialogRef.afterClosed().subscribe((conversationId: string) => {
+      console.log("newConversation: ", conversationId);
 
       // not needed because of subscribing
       // const conversationInfo: ConversationInfo = {
@@ -52,7 +61,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       //   name: conversation.name
       // }
 
-      this.selectedConversationId = conversation.conversationId;
+      this.selectedConversationId = conversationId;
     });
   }
 

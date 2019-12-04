@@ -68,9 +68,9 @@ export class NewConversationComponent implements OnInit {
       return p.username;
     });
 
-    this.conversation.createConversation(this.name, participants).subscribe((conversation) => {
+    this.conversation.createConversation(this.name, participants).subscribe((conversationId) => {
       // if there was a conversation created, send it back and set it as the conversation
-      this.dialogRef.close(conversation);
+      this.dialogRef.close(conversationId);
     });
   }
 

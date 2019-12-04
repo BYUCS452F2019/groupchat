@@ -16,6 +16,9 @@
   <mat-form-field class="almost-full-width">
     <input matInput [(ngModel)]="email" type="email" placeholder="email" (keydown.enter)="signUp()">
   </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="pictureUrl" type="url" placeholder="picture url" (keydown.enter)="signUp()">
+  </mat-form-field>
 
 
 
@@ -26,5 +29,5 @@
 
 <div mat-dialog-actions>
   <button mat-stroked-button color="primary" class="almost-full-width" (click)="signUp()"
-    [disabled]="!username || !password || !firstName || !lastName || !email || !isValidEmail(email)">Sign Up</button>
+    [disabled]="!username || !password || !firstName || !lastName || !email || !isValidEmail(email) || !pictureUrl">Sign Up</button>
 </div>

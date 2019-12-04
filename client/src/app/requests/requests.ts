@@ -30,7 +30,7 @@ export interface CreatePostRequest {
 export interface CreateShortcutRequest {
   username: string;
   pattern;
-  effect;
+  command;
 }
 
 export interface DeleteShortcutRequest {

@@ -25,13 +25,13 @@ export class ShortcutService {
     )
   }
 
-  createShortcut(pattern, effect) {
+  createShortcut(pattern, command) {
     const username = this.storage.getUser().username;
 
     const createShortcutRequest: CreateShortcutRequest = {
       username,
       pattern,
-      effect
+      command
     }
 
     return this.server.createShortcut(createShortcutRequest).pipe(

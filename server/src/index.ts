@@ -38,6 +38,9 @@ app.use('/conversation', ConversationRouter);
 app.use('/post', PostRouter);
 app.use('/shortcut', ShortcutRouter);
 
+app.use(express.static('public'));
+// app.use(express.static('backend'));
+
 // start the Express server
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);

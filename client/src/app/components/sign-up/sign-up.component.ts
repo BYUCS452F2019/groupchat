@@ -15,6 +15,7 @@ export class SignUpComponent implements OnInit {
   public firstName: string;
   public lastName: string;
   public email: string;
+  public pictureUrl: string;
 
   constructor(private auth: AuthService, private router: Router, private dialogRef: MatDialogRef<SignUpComponent>) { }
 
@@ -26,7 +27,7 @@ export class SignUpComponent implements OnInit {
   }
 
   signUp() {
-    if (!this.username || !this.password || !this.firstName || !this.lastName || !this.email) {
+    if (!this.username || !this.password || !this.firstName || !this.lastName || !this.email || !this.isValidEmail(this.email) || !this.pictureUrl) {
       return;
     }
 
@@ -34,7 +35,8 @@ export class SignUpComponent implements OnInit {
     this.auth.signUp(this.username, this.password, {
       firstName: this.firstName,
       lastName: this.lastName,
-      email: this.email
+      email: this.email,
+      pictureUrl: this.pictureUrl
     }).subscribe((signUpResponse) => {
       this.dialogRef.afterClosed().subscribe(() => {
         if (!!signUpResponse) {

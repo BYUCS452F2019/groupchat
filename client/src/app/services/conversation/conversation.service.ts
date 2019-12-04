@@ -2,9 +2,10 @@ import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { ServerService } from '../server/server.service';
 import { CreateConversationRequest } from 'src/app/requests/requests';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { PostService } from '../post/post.service';
 import { UtilityService } from '../utility/utility.service';
+import { timer } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,10 @@ export class ConversationService {
   getUserConversations() {
     const username = this.storage.getUser().username;
 
-    return this.server.getUserConversations(username).pipe(
+    return timer(0, 2000).pipe(
+      switchMap(() => {
+        return this.server.getUserConversations(username);
+      }),
       map((getUserConversationsResponse) => {
         if (!!getUserConversationsResponse) {
           return getUserConversationsResponse.conversations;
@@ -25,6 +29,16 @@ export class ConversationService {
         }
       })
     );
+
+    // return this.server.getUserConversations(username).pipe(
+    //   map((getUserConversationsResponse) => {
+    //     if (!!getUserConversationsResponse) {
+    //       return getUserConversationsResponse.conversations;
+    //     } else {
+    //       return; // nothing
+    //     }
+    //   })
+    // );
   }
 
   getConversationDetails(conversationId: string) {
@@ -53,7 +67,7 @@ export class ConversationService {
     return this.server.createConversation(createConversationRequest).pipe(
       map((createConversationResponse) => {
         if (!!createConversationResponse) {
-          return createConversationResponse.conversation;
+          return createConversationResponse.conversationId;
         } else {
           return; //nothing
         }

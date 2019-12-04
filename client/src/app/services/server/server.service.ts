@@ -149,7 +149,7 @@ export class ServerService {
       tap((res) => {
         console.debug(`post to: ${url}`, 
                       `request sent: ${req}`, 
-                      `options sent: ${options}`, 
+                      `options sent: ${augmentedOptions}`, 
                       `response: ${res}`);
       })
     );
@@ -173,13 +173,13 @@ export class ServerService {
   }
 
   private _formUrl(path: string) {
-    return `${this.BASE_URL}/path`;
+    return `${this.BASE_URL}/${path}`;
   }
 
   private _addAuthorizationHeader(options?: HttpOptions) {
     options = options || {};
 
-    const authToken = this.storage.getAuthToken();
+    const authToken = this.storage.getAuthToken() || 'NONE';
 
     if (!options.headers) {
       options.headers = new HttpHeaders({ authorization: authToken});

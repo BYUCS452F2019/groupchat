@@ -23,7 +23,7 @@ export interface GetConversationDetailsResponse {
 }
 
 export interface CreateConversationResponse {
-  conversation: Conversation;
+  conversationId: string;
 }
 
 export interface LeaveConversationResponse {

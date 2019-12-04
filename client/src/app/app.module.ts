@@ -18,12 +18,14 @@ import { ConversationComponent } from './components/conversation/conversation.co
 import { PostComponent } from './components/post/post.component';
 import { ShortcutComponent } from './components/shortcut/shortcut.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NewShortcutComponent } from './components/new-shortcut/new-shortcut.component';
 
 @NgModule({
   entryComponents: [
     SignInComponent,
     SignUpComponent,
     NewConversationComponent,
+    NewShortcutComponent
   ],
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { HttpClientModule } from '@angular/common/http';
     ConversationComponent,
     PostComponent,
     ShortcutComponent,
+    NewShortcutComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,27 @@
+mat-card-title {
+  font-weight: lighter;
+}
+
+mat-card {
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  top: 20px;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  padding: 0 16px 16px !important;
+}
+
+.command {
+  padding: 8px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.create-shortcut {
+  margin: auto;
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+}

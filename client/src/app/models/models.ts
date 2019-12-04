@@ -28,6 +28,7 @@ export interface Conversation extends ConversationInfo {
 }
 
 export interface Shortcut {
+  shortcutId: string;
   pattern: string;
   username: string;
   command: string;
