@@ -1,0 +1,22 @@
+.close-button {
+  position: absolute;
+  right: 16px;
+  top: 10px;
+  color: #666;
+}
+
+::ng-deep .mat-dialog-container {
+  position: relative;
+}
+
+.mat-form-field {
+  display: block;
+}
+
+.mat-dialog-content {
+  height: calc(100% - 100px);
+}
+
+.mat-dialog-actions {
+  justify-content: flex-end;
+}

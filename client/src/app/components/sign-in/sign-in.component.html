@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>Sign In</h1>
+
+<div mat-dialog-content>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="username" placeholder="username" (keydown.enter)="signIn()">
+  </mat-form-field>
+  <mat-form-field class="almost-full-width">
+    <input matInput [(ngModel)]="password" type="password" placeholder="password" (keydown.enter)="signIn()">
+  </mat-form-field>
+
+  <button mat-icon-button mat-dialog-close class="close-button" tabindex="4">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-stroked-button color="primary" class="almost-full-width" (click)="signIn()" [disabled]="!username || !password">Sign In</button>
+</div>
