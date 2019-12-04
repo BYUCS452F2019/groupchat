@@ -6,14 +6,20 @@
     </button>
 
     <mat-action-list class="conversation-list">
-      <button mat-list-item>
+      <!-- <button mat-list-item>
         <span matBadge="4" matBadgeOverlap="false" matBadgeColor="warn" class="conversation-button" [matBadgeHidden]="false">conversation</span>
       </button>
       <mat-divider></mat-divider>
       <button mat-list-item>
         <span class="conversation-button">other</span>
       </button>
-      <mat-divider></mat-divider>
+      <mat-divider></mat-divider> -->
+      <ng-container *ngFor="let c of conversations">
+        <button mat-list-item>
+          <span class="conversation-button" (click)="setSelectedConversation(c)">{{c.name}}</span>
+        </button>
+        <mat-divider></mat-divider>
+      </ng-container>
 
       
     </mat-action-list>
@@ -24,7 +30,6 @@
   <mat-sidenav-content class="sidenav-content">
     <app-conversation *ngIf="!!selectedConversationId; else noConversation" [conversationId]="selectedConversationId"></app-conversation>
     <ng-template #noConversation>
-      No conversation selected
     </ng-template>
   </mat-sidenav-content>
 </mat-sidenav-container>

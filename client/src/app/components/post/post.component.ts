@@ -17,6 +17,8 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.storage.getUser();
+
+    console.log(this);
   }
 
 }

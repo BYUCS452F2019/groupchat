@@ -16,6 +16,7 @@ export class ShortcutService {
 
     return this.server.getUserShortcuts(username).pipe(
       map((getUserShortcutsResponse) => {
+        console.log(getUserShortcutsResponse);
         if (!!getUserShortcutsResponse) {
           return getUserShortcutsResponse.shortcuts;
         } else {

@@ -41,7 +41,11 @@ export class ShortcutComponent implements OnInit {
     this.visual.displayModal(NewShortcutComponent, {
       width: '300px',
       height: '300px'
-    });
+    }).afterClosed().subscribe((shortcut: Shortcut) => {
+      if (!!shortcut) {
+        this.shortcuts.push(shortcut);
+      }
+    })
   }
 
   trackByShortcutIdFn(index, shortcut: Shortcut) {

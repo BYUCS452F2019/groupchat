@@ -16,7 +16,9 @@ router.get('/user/:username', async function (req, res, next) {
 
   const response = await executeScript(data, METHODS.getUserConversations);
   const transformedResponse: GetUserConversationsResponse = (() => {
-    return response;
+    return {
+      conversations: response
+    };
   })(); // TODO format as needed
 
   res.json(transformedResponse);
@@ -31,13 +33,13 @@ router.get('/details/:conversationId', async function (req, res, next) {
   })(); // TODO format as needed
 
   const conversationInfo: ConversationInfo = await executeScript(data, METHODS.getConversationById);
-  const participants: string[] = await executeScript(data, METHODS.getConversationParticipants);
+  const participants: { conversationId: string, username: string }[] = await executeScript(data, METHODS.getConversationParticipants);
   const posts: Post[] = await executeScript(data, METHODS.getConversationPosts);
   const transformedResponse: GetConversationDetailsResponse = (() => {
     return {
       conversation: {
         ...conversationInfo,
-        participants,
+        participants: participants.map(p => p.username),
         posts
       }
     }
@@ -52,9 +54,17 @@ router.post('/create', async function (req, res, next) {
     return body;
   })(); // TODO format as needed
 
-  const response = await executeScript(data, METHODS.createConversation);
+  const createResponse = await executeScript(data, METHODS.createConversation);
+  const participantsResponse = await Promise.all(
+    data.participants.map(p => {
+      return executeScript({
+        ...createResponse,
+        username: p
+      }, METHODS.createParticipant);
+    })
+  );
   const transformedResponse: CreateConversationResponse = (() => {
-    return response;
+    return createResponse;
   })(); // TODO format as needed
 
   res.json(transformedResponse);

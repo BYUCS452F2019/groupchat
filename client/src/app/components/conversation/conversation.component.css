@@ -78,3 +78,16 @@
 .posts-container:hover::-webkit-scrollbar-track {
   display: block;
 }
+
+.participants-row {
+  height: 16px;
+  padding-top: 12px;
+  font-weight: lighter;
+  font-size: 14px;
+}
+
+.name-row {
+  height: 32px;
+  padding-top: 8px;
+  text-decoration: underline;
+}

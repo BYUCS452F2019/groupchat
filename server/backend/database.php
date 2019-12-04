@@ -3,11 +3,16 @@
 class Database
 {
     // This needs to be filled out still
-    public $servername = "remotemysql.com";
-    public $dbusername = "kpwBSZVzSb";
-    public $dbpassword = "jGNwCE2tmT";
-    public $dbname = "kpwBSZVzSb";
-    public $port = "3306";
+    // public $servername = "remotemysql.com";
+    // public $dbusername = "kpwBSZVzSb";
+    // public $dbpassword = "jGNwCE2tmT";
+    // public $dbname = "kpwBSZVzSb";
+    // public $port = "3306";
+    public $servername = "127.0.0.1"; //getenv('IP');
+    public $dbusername = "root"; //getenv('C9_USER');
+    public $dbpassword = "";
+    public $dbname = "c9";
+    public $dbport = 3306;
 
     // Creates any tables that don't exist
     function createTables()
@@ -45,7 +50,7 @@ class Database
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $db = null;
@@ -72,7 +77,7 @@ class Database
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $db = null;
@@ -104,7 +109,7 @@ class Database
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $db = null;
@@ -134,7 +139,7 @@ class Database
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $db = null;
@@ -163,7 +168,7 @@ class Database
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $db = null;
@@ -180,13 +185,13 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             //echo "New record created successfully";
-            $result = $db->lastInsertId();
-            echo json_encode({ "success": $result });
+            $result = $conn->lastInsertId();
+            echo json_encode(array ( "success" => $result ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $conn = null;
@@ -203,13 +208,13 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "New record created successfully";
-            $result = $db->lastInsertId();
-            echo json_encode({ "conversationId": $result });
+            $result = $conn->lastInsertId();
+            echo json_encode(array ( "conversationId" => $result ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $conn = null;
@@ -226,13 +231,13 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "New record created successfully";
-            $result = $db->lastInsertId();
-            echo json_encode({ "postId": $result });
+            $result = $conn->lastInsertId();
+            echo json_encode(array ( "postId" => $result ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $conn = null;
@@ -249,13 +254,13 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "New record created successfully";
-            $result = $db->lastInsertId();
-            echo json_encode({ "shortcutId": $result });
+            $result = $conn->lastInsertId();
+            echo json_encode(array ( "shortcutId" => $result ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $conn = null;
@@ -272,13 +277,13 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "New record created successfully";
-            $result = $db->lastInsertId();
-            echo json_encode({ "participantId": $result });
+            $result = $conn->lastInsertId();
+            echo json_encode(array ( "participantId" => $result ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
         
         $conn = null;
@@ -298,12 +303,12 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "Record deleted successfully";
-            echo json_encode({ "success": "removeUser" });
+            echo json_encode(array ( "success" => "removeUser" ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
     }
 
@@ -321,12 +326,12 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "Record deleted successfully";
-            echo json_encode({ "success": "removeConversation" });
+            echo json_encode(array ( "success" => "removeConversation" ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
     }
 
@@ -344,12 +349,12 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "Record deleted successfully";
-            echo json_encode({ "success": "removePost" });
+            echo json_encode(array ( "success" => "removePost" ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
     }
 
@@ -367,12 +372,12 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "Record deleted successfully";
-            echo json_encode({ "success": "removeShortcut" });
+            echo json_encode(array ( "success" => "removeShortcut" ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
     }
 
@@ -390,12 +395,12 @@ class Database
             // use exec() because no results are returned
             $conn->exec($sql);
             // echo "Record deleted successfully";
-            echo json_encode({ "success": "removeParticipant" });
+            echo json_encode(array ( "success" => "removeParticipant" ));
         }
         catch(PDOException $e)
         {
             $error = $sql . "<br>" . $e->getMessage();
-            echo json_encode({ "error": $error });
+            echo json_encode(array ( "error" => $error ));
         }
     }
 
@@ -449,11 +454,11 @@ class Database
 
             if (count($result) == 0)
             {
-                echo json_encode({ "error": "empty" });;
+                echo json_encode(array ( "error" => "empty" ));
                 return;
             }
 
-            echo json_encode($result);
+            echo json_encode($result[0]);
             return;
         }
         catch(PDOException $e) {
@@ -469,7 +474,7 @@ class Database
         try {
             $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Conversations C INNER JOIN Participants P ON C.conversationId == P.conversationId  WHERE username = '$username'");
+            $stmt = $conn->prepare("SELECT * FROM Conversations C INNER JOIN Participants P ON C.conversationId = P.conversationId  WHERE username = '$username'");
             $stmt->execute();
         
             // set the resulting array to associative
@@ -479,7 +484,7 @@ class Database
 
             // if (count($result) == 0)
             // {
-            //     echo json_encode({ "error": "empty" });;
+            //     echo json_encode(array ());
             //     return;
             // }
 
@@ -514,7 +519,7 @@ class Database
                 return;
             }
 
-            echo json_encode($result);
+            echo json_encode($result[0]);
             return;
         }
         catch(PDOException $e) {
@@ -537,11 +542,11 @@ class Database
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
-            if (count($result) == 0)
-            {
-                echo "empty";
-                return;
-            }
+            // if (count($result) == 0)
+            // {
+            //     echo "empty";
+            //     return;
+            // }
 
             echo json_encode($result);
             return;
@@ -566,11 +571,11 @@ class Database
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
-            if (count($result) == 0)
-            {
-                echo "empty";
-                return;
-            }
+            // if (count($result) == 0)
+            // {
+            //     echo "empty";
+            //     return;
+            // }
             echo json_encode($result);
             return;
         }
@@ -613,6 +618,34 @@ class Database
             return null;
         }
         
+    }
+    
+    function getShortcutById($shortcutId)
+    {
+        try {
+            $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $conn->prepare("SELECT * FROM Shortcuts WHERE shortcutId = '$shortcutId'");
+            $stmt->execute();
+        
+            // set the resulting array to associative
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetchAll();
+            $conn = null;
+            if (count($result) == 0)
+            {
+                echo "empty";
+                return;
+            }
+
+            echo json_encode($result[0]);
+            return;
+        }
+        catch(PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            $conn = null;
+            return null;
+        }
     }
 
     /* Takes a message and changes it so that any shortcuts will be implemented and returns new message */
@@ -658,11 +691,11 @@ class Database
             $stmt->setFetchMode(PDO::FETCH_ASSOC);
             $result = $stmt->fetchAll();
             $conn = null;
-            if (count($result) == 0)
-            {
-                echo "empty";
-                return;
-            }
+            // if (count($result) == 0)
+            // {
+            //     echo "empty";
+            //     return;
+            // }
             echo json_encode($result);
             return;
         }

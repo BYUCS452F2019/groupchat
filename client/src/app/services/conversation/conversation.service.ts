@@ -17,7 +17,7 @@ export class ConversationService {
   getUserConversations() {
     const username = this.storage.getUser().username;
 
-    return timer(0, 2000).pipe(
+    return timer(0, 20000).pipe(
       switchMap(() => {
         return this.server.getUserConversations(username);
       }),

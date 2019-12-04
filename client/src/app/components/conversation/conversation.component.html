@@ -1,7 +1,18 @@
 <div class="conversation-container">
-  <div class="posts-container">
+  <mat-toolbar>
+    <mat-toolbar-row class="name-row">
+      <span>{{name}}</span>
+    </mat-toolbar-row>
+  
+    <mat-toolbar-row class="participants-row">
+      <span>
+        <ng-container *ngFor="let p of participants">{{p}} </ng-container>
+      </span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="posts-container" #postContainer>
     <mat-list class="post-list">
-      <app-post [post]="post" *ngFor="let p of nums; trackBy: trackByPostIdFn"></app-post>
+      <app-post [post]="p" *ngFor="let p of posts; trackBy: trackByPostIdFn"></app-post>
     </mat-list>
   </div>
 
@@ -9,6 +20,6 @@
     <mat-label>New Message</mat-label>
     <textarea #text matInput cdkTextareaAutosize #autosize="cdkTextareaAutosize"
     cdkAutosizeMinRows="1" cdkAutosizeMaxRows="8" class="post-input-textarea" 
-    (keydown.enter)="createPost(text.value); text.value = ''"></textarea>
+    (keydown.enter)="createPost($event, text.value)"></textarea>
   </mat-form-field>
 </div>

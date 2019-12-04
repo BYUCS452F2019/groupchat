@@ -10,9 +10,12 @@ router.post('/create', async function (req, res, next) {
     return body;
   })(); // TODO format as needed
 
-  const response = await executeScript(data, METHODS.createPost);
+  const createResponse = await executeScript(data, METHODS.createPost);
+  const getResponse = await executeScript(createResponse, METHODS.getPostById);
   const transformedResponse: CreatePostResponse = (() => {
-    return response;
+    return {
+      post: getResponse
+    };
   })(); // TODO format as needed
 
   res.json(transformedResponse);

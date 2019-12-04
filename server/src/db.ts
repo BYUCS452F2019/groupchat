@@ -3,8 +3,12 @@ import { URLSearchParams } from 'url';
 const FormData = require('form-data');
 
 const isDev = process.env.NODE_ENV !== 'production';
-const BASE_URL = isDev ? 'http://ec2-54-245-14-178.us-west-2.compute.amazonaws.com' : 'http://<PROD_URL>';
+const BASE_URL = isDev ? 'http://ec2-54-187-49-203.us-west-2.compute.amazonaws.com/groupchat' : 'http://<PROD_URL>';
 const URL = `${BASE_URL}/databaseScript.php`;
+
+// declare class URLSearchParams {
+//   constructor()
+// };
 
 export enum METHODS {
   signin = 'validateLogin',
@@ -12,13 +16,16 @@ export enum METHODS {
   signout = '',
   getUserConversations = 'getConversationsByUsername',
   getConversationById = 'getConversationById',
+  createParticipant = 'addParticipant',
   getConversationParticipants = 'getAllParticipantsOfConversationWithConversationId',
   getConversationPosts = 'getAllPostsInConversation',
   createConversation = 'addConversation',
   leaveConversation = 'removeParticipant',
   createPost = 'addPost',
+  getPostById = 'getPostById',
   deletePost = 'removePost',
   getUserShortcuts = 'getUserShortcuts',
+  getShortcutById = 'getShortcutById',
   createShortcut = 'addShortcut',
   deleteShortcut = 'removeShortcut'
 }
@@ -33,6 +40,7 @@ async function post(url: string, body: any): Promise<any> {
   let data;
 
   console.log(`${(new FormData(body))}`);
+  console.log(body);
 
   // return new Promise((resolve, reject) => {
   //   exec(`php backend/databaseScript.php ${new URLSearchParams(body)}`, function (error, stdout, stderr) {
@@ -59,6 +67,8 @@ async function post(url: string, body: any): Promise<any> {
     }
 
     data = await response.json();
+
+    console.log(data);
 
     return data;
   } catch (err) {

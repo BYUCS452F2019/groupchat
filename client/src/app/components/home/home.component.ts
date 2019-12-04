@@ -4,7 +4,7 @@ import { NewConversationComponent } from '../new-conversation/new-conversation.c
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { StorageService } from 'src/app/services/storage/storage.service';
 import { Router } from '@angular/router';
-import { ConversationInfo } from '../../models/models';
+import { ConversationInfo, Conversation } from '../../models/models';
 import { ConversationService } from 'src/app/services/conversation/conversation.service';
 import { Observable } from 'rxjs';
 
@@ -33,13 +33,19 @@ export class HomeComponent implements OnInit, OnDestroy {
     // TODO subscribe to this and update conversations on change by polling and calling next on this
     this.conversationsSubscription = this.conversation.getUserConversations();
     this.conversationsSubscription.subscribe((conversationInfos) => {
-      this.conversations = conversationInfos;
+      if (!!conversationInfos) {
+        this.conversations = conversationInfos;
 
-      if (!this.selectedConversationId && !!conversationInfos.length) {
-        this.selectedConversationId = conversationInfos[0].conversationId;
+        if (!this.selectedConversationId && !!conversationInfos.length) {
+          this.selectedConversationId = conversationInfos[0].conversationId;
+        }
       }
     });
 
+  }
+
+  setSelectedConversation(conversation: Conversation) {
+    this.selectedConversationId = conversation.conversationId;
   }
 
   ngOnDestroy() {

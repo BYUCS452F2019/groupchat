@@ -4,13 +4,13 @@ ini_set("error_log", "errors.log");
 require_once "database.php";
 $db = new Database();
 
-echo('Hi there');
-echo($_POST['method']);
+// echo('Hi there');
+// echo($_POST['method']);
 
-if (!isset($_SERVER["HTTP_HOST"])) {
-  parse_str($argv[1], $_GET);
-  parse_str($argv[1], $_POST);
-}
+// if (!isset($_SERVER["HTTP_HOST"])) {
+//   parse_str($argv[1], $_GET);
+//   parse_str($argv[1], $_POST);
+// }
 
 error_log($_POST['method']);
 
@@ -71,6 +71,7 @@ else if ($_POST['method'] == "removeParticipant")
 
 else if ($_POST['method'] == "validateLogin")
 {
+    // echo json_encode(array ("m" => "yes"));
     $db->validateLogin($_POST['username'], $_POST['password']);
 }
 
@@ -113,6 +114,11 @@ else if ($_POST['method'] == "getAllParticipantsOfConversationWithConversationId
 else if ($_POST['method'] == "getUserShortcuts")
 {
     $db->getUserShortcuts($_POST['username']);
+}
+
+else if ($_POST['method'] == "getShortcutById")
+{
+    $db->getShortcutById($_POST['shortcutId']);
 }
 
 ?>

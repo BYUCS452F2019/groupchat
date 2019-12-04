@@ -12,7 +12,9 @@ router.post('/signin', async function(req, res, next) {
     return body;
   })(); // TODO format as needed
 
-  const signinResponse: User = (await executeScript(data, METHODS.signin))[0];
+  const signinResponse: User = await executeScript(data, METHODS.signin);
+
+  console.log('signin response', signinResponse);
 
   if (!!signinResponse && !!signinResponse.username) {
     const transformedResponse: SignInResponse = (() => {

@@ -14,7 +14,9 @@ router.get('/user/:username', async function (req, res, next) {
 
   const response = await executeScript(data, METHODS.getUserShortcuts);
   const transformedResponse: GetUserShortcutsResponse = (() => {
-    return response;
+    return {
+      shortcuts: response
+    };
   })(); // TODO format as needed
 
   res.json(transformedResponse);
@@ -26,9 +28,12 @@ router.post('/create', async function (req, res, next) {
     return body;
   })(); // TODO format as needed
 
-  const response = await executeScript(data, METHODS.createShortcut);
+  const createResponse = await executeScript(data, METHODS.createShortcut);
+  const getResponse = await executeScript(createResponse, METHODS.getShortcutById);
   const transformedResponse: CreateShortcutResponse = (() => {
-    return response;
+    return {
+      shortcut: getResponse
+    };
   })(); // TODO format as needed
 
   res.json(transformedResponse);
