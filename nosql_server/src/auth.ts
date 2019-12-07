@@ -2,10 +2,15 @@ import * as express from "express";
 import { SignInRequest, SignUpRequest, SignOutRequest } from "./requests/requests";
 import { User } from "./models/models";
 import { SignUpResponse, SignInResponse, SignOutResponse } from "./responses/responses";
+import { userInfo } from "os";
 
 var router = express.Router();
+var db = require("./nosqldb");
 
+/*
 router.post('/signin', async function(req, res, next) {
+  
+
   const body: SignInRequest = req.body;
   const data = (() => {
     return body;
@@ -28,23 +33,35 @@ router.post('/signin', async function(req, res, next) {
     res.status(401).json({ error: 'unable to signin' });
   }
 });
+*/
+
+
+/* NoSQL Implementation */
 
 router.post('/signup', async function (req, res, next) {
-  const body: SignUpRequest = req.body;
+
+  let body: SignUpRequest = req.body;
+  body.timestamp = new Date();
+  db.users.insert(body); 
   const data = (() => {
     return body;
-  })(); // TODO format as needed
+  })(); 
 
-  const createResponse: Success = await executeScript(data, METHODS.signup);
-  const signinResponse: User = (await executeScript(data, METHODS.signin))[0];
+  let user : User;
+  user.username = body.username;
+  user.firstName = body.firstName;
+  user.lastName = body.lastName;
+  user.email = body.email;
+  user.pictureUrl = body.pictureUrl;
+  user.timestamp = body.timestamp;
   
-  if (!!createResponse && !!createResponse.success && !!signinResponse) {
+  if (!!body) {
     const transformedResponse: SignUpResponse = (() => {
       return {
-        user: signinResponse,
+        user: user,
         authToken: (new Date()).toDateString()
       }
-    })(); // TODO format as needed
+    })(); 
 
     res.json(transformedResponse);
   } else {
@@ -52,6 +69,9 @@ router.post('/signup', async function (req, res, next) {
   }
 });
 
+
+
+/*
 router.post('/signout', async function (req, res, next) {
   // const body: SignOutRequest = req.body;
   // const data = (() => {
@@ -69,5 +89,6 @@ router.post('/signout', async function (req, res, next) {
     'success': true
   } as SignOutResponse);
 });
+*/
 
 export default router;
