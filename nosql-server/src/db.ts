@@ -15,10 +15,10 @@ export enum updateType {
   Push = '$push'
 }
 
-export async function insertOne<T>(collection: collections, data: T) {
+export async function insertOne(collection: collections, data) {
   const result = await mongoGet().db('gc').collection(collection).insertOne(data);
 
-  return result.ops[0] as T;
+  return result.ops[0] as any;
 }
 
 export async function updateUser(username: string, key: string, value: any, updateType: updateType) {
@@ -75,10 +75,13 @@ export async function getConversation(conversationId: string) {
 
 export async function getConversations(conversationIds: string[]) {
   const query = {
-    conversationIds
+    conversationIds: {
+      "$in": conversationIds
+    }
   };
 
-  return await getMany(collections.Conversations, query);
+  const cursorResult = await getMany(collections.Conversations, query);
+  return cursorResult.toArray();
 }
 
 export async function getMany(collection: collections, query: any) {

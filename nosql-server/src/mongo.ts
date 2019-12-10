@@ -7,7 +7,7 @@ import { MongoClient } from "mongodb";
 const url = 'mongodb://username:password1234@ds253348.mlab.com:53348/groupchat-backend';
 var mongoClient: MongoClient;
 
-async function mongoConnect() {
+export async function mongoConnect() {
   mongoClient = await MongoClient.connect(url);
 }
 

@@ -12,20 +12,7 @@ import { NewShortcutComponent } from '../new-shortcut/new-shortcut.component';
 })
 export class ShortcutComponent implements OnInit {
 
-  public shortcuts: Shortcut[] = [
-    {
-      pattern: 'pattern',
-      command: 'this is pattern 1!',
-      shortcutId: '1',
-      username: 'username'
-    },
-    {
-      pattern: '/{meso}',
-      command: 'If you or a loved one has been diagnosed with mesotheloma ...',
-      shortcutId: '2',
-      username: 'username'
-    }
-  ]
+  public shortcuts: Shortcut[] = [];
 
   constructor(private shortcut: ShortcutService, private visual: VisualService) { }
 

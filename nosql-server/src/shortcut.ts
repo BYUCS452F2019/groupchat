@@ -2,6 +2,8 @@ import * as express from "express";
 import { CreatePostRequest, CreateShortcutRequest } from "./requests/requests";
 import { getUser, updateConversation, updateUser, updateType } from "./db";
 import { CreatePostResponse, CreateShortcutResponse, DeleteShortcutResponse, GetUserShortcutsResponse } from "./responses/responses";
+import uuid from "uuid";
+
 var router = express.Router();
 
 router.get('/user/:username', async function (req, res, next) {
@@ -26,7 +28,10 @@ router.get('/user/:username', async function (req, res, next) {
 router.post('/create', async function (req, res, next) {
   const body: CreateShortcutRequest = req.body;
   const data = (() => {
-    return body;
+    return {
+      ...body,
+      shortcutId: uuid()
+    }
   })(); // TODO format as needed
 
   const response = await updateUser(data.username, 'shortcuts', data, updateType.Push);

@@ -2,12 +2,16 @@ import * as express from "express";
 import { CreatePostRequest } from "./requests/requests";
 import { insertOne, updateConversation, updateType } from "./db";
 import { CreatePostResponse, DeletePostResponse } from "./responses/responses";
+import uuid = require("uuid");
 var router = express.Router();
 
 router.post('/create', async function (req, res, next) {
   const body: CreatePostRequest = req.body;
   const data = (() => {
-    return body;
+    return {
+      ...body,
+      postId: uuid()
+    }
   })(); // TODO format as needed
 
   const response = await updateConversation(data.conversationId, 'posts', data, updateType.Push);

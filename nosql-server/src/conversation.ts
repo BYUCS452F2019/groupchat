@@ -3,6 +3,7 @@ import { CreateConversationRequest, LeaveConversationRequest } from "./requests/
 import { getConversations, getUser, getConversation, insertOne, collections } from "./db";
 import { CreateConversationResponse, LeaveConversationResponse, GetUserConversationsResponse, GetConversationDetailsResponse } from "./responses/responses";
 import { ConversationInfo, Post } from "./models/models";
+import uuid from "uuid";
 
 var router = express.Router();
 
@@ -48,7 +49,10 @@ router.get('/details/:conversationId', async function (req, res, next) {
 router.post('/create', async function (req, res, next) {
   const body: CreateConversationRequest = req.body;
   const data = (() => {
-    return body;
+    return {
+      ...body,
+      conversationId: uuid()
+    }
   })(); // TODO format as needed
 
   const response = await insertOne(collections.Conversations, data);
