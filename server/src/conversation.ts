@@ -2,7 +2,7 @@ import * as express from "express";
 import { CreateConversationRequest, LeaveConversationRequest } from "./requests/requests";
 import { executeScript, METHODS } from "./db";
 import { CreateConversationResponse, LeaveConversationResponse, GetUserConversationsResponse, GetConversationDetailsResponse } from "./responses/responses";
-import { ConversationInfo, Post } from "./models/models";
+import { ConversationInfo, Post, Shortcut } from "./models/models";
 
 var router = express.Router();
 
@@ -34,13 +34,38 @@ router.get('/details/:conversationId', async function (req, res, next) {
 
   const conversationInfo: ConversationInfo = await executeScript(data, METHODS.getConversationById);
   const participants: { conversationId: string, username: string }[] = await executeScript(data, METHODS.getConversationParticipants);
-  const posts: Post[] = await executeScript(data, METHODS.getConversationPosts);
+  
+  let shortcutMap: Map<string, Shortcut[]> = new Map();
+  
+  for (let p of participants) {
+    const data = { username: p.username };
+    const shortcuts = await executeScript(data, METHODS.getUserShortcuts);
+    
+    shortcutMap.set(p.username, shortcuts);
+  }
+  
+  const posts: Post[] = await executeScript(data, METHODS.getConversationPosts) || [];
+  const transformedPosts: Post[] = posts.map((p) => {
+    const shortcuts = shortcutMap.get(p.username) || [];
+    let content = p.content;
+    
+    shortcuts.forEach((s) => {
+      const patternRegex = new RegExp(s.pattern, 'g');
+      content = content.replace(patternRegex, s.command);
+    });
+    
+    return {
+      ...p,
+      content
+    }
+  });
+  
   const transformedResponse: GetConversationDetailsResponse = (() => {
     return {
       conversation: {
         ...conversationInfo,
         participants: participants.map(p => p.username),
-        posts
+        posts: transformedPosts
       }
     }
   })(); // TODO format as needed

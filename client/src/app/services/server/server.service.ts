@@ -29,7 +29,7 @@ interface HttpOptions {
 })
 export class ServerService {
 
-  private readonly BASE_URL = 'http://localhost:3000';
+  private readonly BASE_URL = 'http://ec2-54-187-49-203.us-west-2.compute.amazonaws.com:3000';
 
   constructor(private http: HttpClient, private storage: StorageService) { }
 

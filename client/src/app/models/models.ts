@@ -15,6 +15,7 @@ export interface Post {
   username: string;
   content: string;
   timestamp: Date;
+  image?: string;
 }
 
 export interface ConversationInfo {

@@ -564,7 +564,7 @@ class Database
         try {
             $conn = new PDO("mysql:host=$this->servername;port=$this->port;dbname=$this->dbname", $this->dbusername, $this->dbpassword);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $stmt = $conn->prepare("SELECT * FROM Posts WHERE conversationId = '$conversationId'");
+            $stmt = $conn->prepare("SELECT Posts.*, pictureUrl as image FROM Posts INNER JOIN Users ON Posts.username = User.username WHERE conversationId = '$conversationId'");
             $stmt->execute();
         
             // set the resulting array to associative

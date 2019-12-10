@@ -14,8 +14,6 @@ router.post('/signin', async function(req, res, next) {
 
   const signinResponse: User = await executeScript(data, METHODS.signin);
 
-  console.log('signin response', signinResponse);
-
   if (!!signinResponse && !!signinResponse.username) {
     const transformedResponse: SignInResponse = (() => {
       return {
@@ -37,7 +35,9 @@ router.post('/signup', async function (req, res, next) {
   })(); // TODO format as needed
 
   const createResponse: Success = await executeScript(data, METHODS.signup);
-  const signinResponse: User = (await executeScript(data, METHODS.signin))[0];
+  const signinResponse: User = (await executeScript(data, METHODS.signin));
+  
+  // console.log('SIGNIN RESPONSE', signinResponse);
   
   if (!!createResponse && !!createResponse.success && !!signinResponse) {
     const transformedResponse: SignUpResponse = (() => {
