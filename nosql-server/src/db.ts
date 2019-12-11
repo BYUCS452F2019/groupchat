@@ -1,4 +1,5 @@
 import { mongoGet } from "./mongo";
+import { User } from "./models/models";
 
 // const isDev = process.env.NODE_ENV !== 'production';
 // const BASE_URL = isDev ? 'http://ec2-54-187-49-203.us-west-2.compute.amazonaws.com/groupchat' : 'http://<PROD_URL>';
@@ -16,7 +17,7 @@ export enum updateType {
 }
 
 export async function insertOne(collection: collections, data) {
-  const result = await mongoGet().db('gc').collection(collection).insertOne(data);
+  const result = await mongoGet().collection(collection).insertOne(data);
 
   return result.ops[0] as any;
 }
@@ -51,10 +52,10 @@ export async function updateConversation(conversationId: string, key: string, va
 }
 
 async function updateCollection(collection: collections, query: any, update: any) {
-  const result = await mongoGet().db('gc').collection(collection).update(query, update);
+  const result = await mongoGet().collection(collection).findOneAndUpdate(query, update, { returnOriginal: false });
 
   // TODO search for inserted value if this returns an array
-  return result.ops[0];
+  return result.value as any;
 }
 
 export async function getUser(username: string) {
@@ -75,23 +76,24 @@ export async function getConversation(conversationId: string) {
 
 export async function getConversations(conversationIds: string[]) {
   const query = {
-    conversationIds: {
+    conversationId: {
       "$in": conversationIds
     }
   };
 
   const cursorResult = await getMany(collections.Conversations, query);
-  return cursorResult.toArray();
+
+  return await cursorResult.toArray();
 }
 
 export async function getMany(collection: collections, query: any) {
-  const result = await mongoGet().db('gc').collection(collection).find(query);
+  const result = await mongoGet().collection(collection).find(query);
 
   return result;
 }
 
 export async function getOne(collection: collections, query: any) {
-  const result = await mongoGet().db('gc').collection(collection).findOne(query);
+  const result = await mongoGet().collection(collection).findOne(query);
 
   return result;
 }

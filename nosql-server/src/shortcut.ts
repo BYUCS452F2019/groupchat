@@ -35,10 +35,11 @@ router.post('/create', async function (req, res, next) {
   })(); // TODO format as needed
 
   const response = await updateUser(data.username, 'shortcuts', data, updateType.Push);
-  
+  const shortcut = response.shortcuts[response.shortcuts.length - 1];
+
   const transformedResponse: CreateShortcutResponse = (() => {
     return {
-      shortcut: response
+      shortcut: shortcut
     };
   })(); // TODO format as needed
 

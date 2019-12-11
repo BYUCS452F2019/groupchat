@@ -12,7 +12,9 @@ export async function mongoConnect() {
 }
 
 export function mongoGet() {
-  return mongoClient;
+  let db = mongoClient.db('groupchat-backend');
+
+  return db;
 }
 
 export async function mongoClose() {

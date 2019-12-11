@@ -46,7 +46,7 @@ export class ConversationService {
       map((getConversationDetailsResponse) => {
         if (!!getConversationDetailsResponse) {
           let c = getConversationDetailsResponse.conversation;
-          c.posts.map(this.utility.augmentTimestamp); //convert timestamps to date objects
+          (c.posts || []).map(this.utility.augmentTimestamp); //convert timestamps to date objects
 
           return c;
         } else {
