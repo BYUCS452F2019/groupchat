@@ -14,7 +14,7 @@ export class ConversationComponent implements OnInit {
 
   public name: string;
   public participants: string[];
-  public posts: Post[];
+  public posts: Post[] = [];
   private _conversationId: string;
 
   @Input() set conversationId(value: string) {
@@ -105,7 +105,7 @@ export class ConversationComponent implements OnInit {
   }
 
   private _addPosts(posts: Post[]) {
-    this.posts = this.utility.unique([...this.posts, ...posts], 'postId', 'timestamp');
+    this.posts = this.utility.unique([...this.posts, ...posts], 'postId', 'timestamp') || [];
 
     this._sortPosts();
   }
